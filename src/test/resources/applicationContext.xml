@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- import spring components from other UoA packages -->
+	<import resource="classpath*:META-INF/uoa/spring-*.xml"/>
+
+	<bean class="nz.ac.auckland.syllabus.errors.ErrorHandlerCollectionTest$A1Handler"/>
+	<bean class="nz.ac.auckland.syllabus.errors.ErrorHandlerCollectionTest$B2Handler"/>
+	<bean class="nz.ac.auckland.syllabus.errors.ErrorHandlerCollectionTest$C3Handler"/>
+	<bean class="nz.ac.auckland.syllabus.errors.ErrorHandlerCollectionTest$D2Handler"/>
+
+	<bean class="nz.ac.auckland.syllabus.hooks.EventHookCollectionTest$EventHookNSFirst"/>
+	<bean class="nz.ac.auckland.syllabus.hooks.EventHookCollectionTest$EventHookNSSecond"/>
+	<bean class="nz.ac.auckland.syllabus.hooks.EventHookCollectionTest$EventHookTest"/>
+	<bean class="nz.ac.auckland.syllabus.hooks.EventHookCollectionTest$EventHookTestWithInit"/>
+</beans>
