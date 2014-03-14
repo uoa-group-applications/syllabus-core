@@ -9,7 +9,7 @@
 
 	<groupId>nz.ac.auckland.syllabus</groupId>
 	<artifactId>syllabus-core</artifactId>
-	<version>1.18</version>
+	<version>1.19-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Syllabus - Core</name>
 
@@ -70,8 +70,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-  <scm>
-    <tag>syllabus-core-1.18</tag>
-  </scm>
 </project>
