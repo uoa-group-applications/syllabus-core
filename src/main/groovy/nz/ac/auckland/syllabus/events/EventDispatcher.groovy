@@ -1,8 +1,10 @@
 package nz.ac.auckland.syllabus.events
 
 import net.stickycode.stereotype.Configured
+import net.stickycode.stereotype.configured.PostConfigured
 import nz.ac.auckland.common.config.ConfigKey
 import nz.ac.auckland.common.stereotypes.UniversityComponent
+import nz.ac.auckland.lmz.common.AppVersion
 import nz.ac.auckland.syllabus.errors.ErrorHandlerCollection
 import nz.ac.auckland.syllabus.errors.SyllabusExceptionHandler
 import nz.ac.auckland.syllabus.errors.TransmissionException
@@ -41,12 +43,6 @@ class EventDispatcher {
 	JacksonHelperApi jacksonHelperApi
 
 	/**
-	 * @see nz.ac.auckland.common.config.JarManifestConfigurationSource#KEY_IMPLEMENTATION_VERSION
-	 */
-	@ConfigKey("Implementation-Version")
-	protected String currentVersion = 'unknown';
-
-	/**
 	 * Event collection bound here
 	 */
 	@Inject
@@ -63,6 +59,15 @@ class EventDispatcher {
 	 */
 	@Inject
 	private EventHookCollection eventHookCollection;
+
+	@Inject
+	AppVersion version
+
+	@net.stickycode.stereotype.configured.Configured
+	// force @postconfigured
+	String meh = "meh.";
+
+	private String currentVersion;
 
 	/**
 	 * Contains the types for a specific type that needs to be marshalled
@@ -82,6 +87,11 @@ class EventDispatcher {
 
 	public EventDispatcher() {
 		marshallingTypes = new ConcurrentHashMap<>();
+	}
+
+	@PostConfigured
+	public void version() {
+		this.currentVersion = version.version
 	}
 
 	/**
