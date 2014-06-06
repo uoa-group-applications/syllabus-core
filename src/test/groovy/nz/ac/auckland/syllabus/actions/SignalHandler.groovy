@@ -2,10 +2,6 @@ package nz.ac.auckland.syllabus.actions
 
 import groovy.transform.CompileStatic
 import nz.ac.auckland.syllabus.events.Event
-import nz.ac.auckland.syllabus.events.EventHandler
-
-import nz.ac.auckland.syllabus.payload.EventResponseBase
-import nz.ac.auckland.syllabus.payload.EventRequestBase
 
 /**
  * User: marnix
@@ -16,9 +12,9 @@ import nz.ac.auckland.syllabus.payload.EventRequestBase
  */
 @CompileStatic
 @Event(name = "MySignalEvent")
-class SignalHandler implements EventHandler<EventRequestBase, EventResponseBase> {
+class SignalHandler {
 
-	public EventResponseBase handleEvent(EventRequestBase v) throws Exception {
+	public String handleEvent() {
 		return null
 	}
 

@@ -2,9 +2,8 @@ package nz.ac.auckland.syllabus
 
 import groovy.transform.CompileStatic
 import junit.framework.TestCase
-import org.junit.Test
-
 import nz.ac.auckland.syllabus.actions.BasicEventHandler
+import org.junit.Test
 
 /**
  * User: marnix

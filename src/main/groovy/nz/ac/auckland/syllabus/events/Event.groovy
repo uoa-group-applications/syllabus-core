@@ -1,15 +1,14 @@
 package nz.ac.auckland.syllabus.events
 
-import java.lang.annotation.RetentionPolicy
-import java.lang.annotation.Retention
-
-import java.lang.annotation.Target
 import java.lang.annotation.ElementType
+import java.lang.annotation.Retention
+import java.lang.annotation.RetentionPolicy
+import java.lang.annotation.Target
 
 /**
- * User: marnix
- * Date: 25/03/13
- * Time: 11:10 AM
+ * Add this to any class and add a "handle" or "handleEvent" method. The method can take 0, 1 or 2 parameters.
+ * One of those parameters can be a SyllabusContext if you need it, the other can be any object that the request body
+ * will be posted into.
  *
  * Event description
  */
@@ -32,5 +31,10 @@ import java.lang.annotation.ElementType
 	 */
 	String namespace() default "app"
 
-
+	/**
+	 * Tells us what version of the application we last changed this API.
+	 *
+	 * @return
+	 */
+	String since() default "1.1-SNAPSHOT"
 }

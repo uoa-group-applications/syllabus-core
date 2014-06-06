@@ -1,15 +1,15 @@
 package nz.ac.auckland.syllabus.events
 
 import groovy.transform.CompileStatic
+import nz.ac.auckland.common.testrunner.BatheCommandLine
+import nz.ac.auckland.common.testrunner.SimpleSpringRunner
 import nz.ac.auckland.syllabus.actions.BasicEventHandler
 import nz.ac.auckland.syllabus.actions.SignalHandler
-import nz.ac.auckland.syllabus.payload.EventRequestBase
-import nz.ac.auckland.syllabus.payload.EventResponseBase
+import nz.ac.auckland.syllabus.generator.EventHandlerConfig
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 import javax.inject.Inject
 
@@ -21,11 +21,10 @@ import javax.inject.Inject
  * Test the dispatcher
  */
 @CompileStatic
-@RunWith(SpringJUnit4ClassRunner.class)
+@BatheCommandLine(["-Pclasspath:/test.properties"])
+@RunWith(SimpleSpringRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class EventDispatcherTest {
-
-	private static final String PACKAGE_BASE = "nz.ac.auckland.syllabus.actions";
 
 	@Inject
 	private ApplicationContext applicationContext
@@ -35,10 +34,9 @@ public class EventDispatcherTest {
 
 		EventHandlerCollection ec = applicationContext.getBean(EventHandlerCollection.class)
 
-		List<EventHandler<?, ?>> foundBeans = ec.findAll();
+		def foundBeans = ec.findAll();
 
-		List<Class<?>> classes = []
-		foundBeans?.each { EventHandler<?, ?> handler -> classes << handler.class }
+		List<Class<?>> classes = foundBeans.collect({EventHandlerConfig cfg -> return cfg.instance.getClass()})
 
 		assert foundBeans.size() == 2 + 1; // The +1 is the AppVersionEvent
 		assert BasicEventHandler.class in classes;
@@ -50,9 +48,12 @@ public class EventDispatcherTest {
 	public void findsPayloadTypeProperly() {
 		EventHandlerCollection ec = applicationContext.getBean(EventHandlerCollection.class)
 		EventDispatcher ed = applicationContext.getBean(EventDispatcher.class)
-		EventHandler<? extends EventRequestBase, ? extends EventResponseBase> basic = ec.findByName("MyAction", "pcf")
-		assert ed.getRequestType(basic) == BasicEventHandler.Input
-		assert ed.getResponseType(basic) == BasicEventHandler.Output
+		EventHandlerConfig basic = ec.findByName("MyAction", "pcf")
+
+		assert basic.instance == applicationContext.getBean(BasicEventHandler)
+		assert basic.method.name == 'handleEvent'
+		assert basic.name == 'MyAction'
+		assert basic.namespace == 'pcf'
 	}
 
 }

@@ -16,6 +16,7 @@
 	<context:component-scan base-package="nz.ac.auckland" use-default-filters="false">
 		<context:include-filter type="annotation" expression="nz.ac.auckland.syllabus.events.Event"/>
 		<context:include-filter type="annotation" expression="nz.ac.auckland.syllabus.hooks.BeforeEvent"/>
+		<context:include-filter type="annotation" expression="nz.ac.auckland.syllabus.hooks.AfterEvent"/>
 	</context:component-scan>
 
 </beans>

@@ -2,13 +2,13 @@ package nz.ac.auckland.syllabus.errors
 
 import groovy.transform.CompileStatic
 import nz.ac.auckland.common.stereotypes.UniversityComponent
+import nz.ac.auckland.common.testrunner.BatheCommandLine
+import nz.ac.auckland.common.testrunner.SimpleSpringRunner
 import nz.ac.auckland.syllabus.payload.ErrorResponse
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.context.ApplicationContext
-import org.springframework.stereotype.Component
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 import javax.inject.Inject
 
@@ -18,7 +18,8 @@ import javax.inject.Inject
  * Time: 1:42 PM
  */
 @CompileStatic
-@RunWith(SpringJUnit4ClassRunner.class)
+@BatheCommandLine(["-Pclasspath:/test.properties"])
+@RunWith(SimpleSpringRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class ErrorHandlerCollectionTest {
 
@@ -31,11 +32,12 @@ public class ErrorHandlerCollectionTest {
 		ErrorHandlerCollection ec = applicationContext.getBean(ErrorHandlerCollection.class)
 
 		assert ec.handlers.size() == 5
-		assert ec.handlers[0] instanceof C3Handler;
-		assert ec.handlers[1] instanceof B2Handler;
-		assert ec.handlers[2] instanceof D2Handler;
-		assert ec.handlers[3] instanceof A1Handler;
-		assert ec.handlers[4] instanceof UncaughtExceptionHandler;
+		List<Class<?>> handlers = ec.handlers.collect({return it.getClass()})
+		assert handlers.contains(C3Handler)
+		assert handlers.contains(B2Handler)
+		assert handlers.contains(A1Handler)
+		assert handlers.contains(D2Handler)
+		assert handlers.contains(UncaughtExceptionHandler)
 	}
 
 	@Test
@@ -65,31 +67,26 @@ public class ErrorHandlerCollectionTest {
 	// ----------------------------------
 
 	@UniversityComponent
-	static class A1Handler implements SyllabusExceptionHandler<Exception> {
-		Class<? extends Exception> respondsTo() { A1Exception.class }
+	static class A1Handler implements SyllabusExceptionHandler<A1Exception> {
 
-		ErrorResponse handleError(Exception exception) { return null }
+		ErrorResponse handleError(A1Exception exception) { return null }
 	}
 
 	@UniversityComponent
-	static class B2Handler implements SyllabusExceptionHandler<Exception> {
-		Class<? extends Exception> respondsTo() { B2Exception.class }
-
-		ErrorResponse handleError(Exception exception) { return null }
+	static class B2Handler implements SyllabusExceptionHandler<B2Exception> {
+		ErrorResponse handleError(B2Exception exception) { return null }
 	}
 
 	@UniversityComponent
-	static class C3Handler implements SyllabusExceptionHandler<Exception> {
-		Class<? extends Exception> respondsTo() { C3Exception.class }
+	static class C3Handler implements SyllabusExceptionHandler<C3Exception> {
 
-		ErrorResponse handleError(Exception exception) { return null }
+		ErrorResponse handleError(C3Exception exception) { return null }
 	}
 
 	@UniversityComponent
-	static class D2Handler implements SyllabusExceptionHandler<Exception> {
-		Class<? extends Exception> respondsTo() { D2Exception.class }
+	static class D2Handler implements SyllabusExceptionHandler<D2Exception> {
 
-		ErrorResponse handleError(Exception exception) { return null }
+		ErrorResponse handleError(D2Exception exception) { return null }
 	}
 
 

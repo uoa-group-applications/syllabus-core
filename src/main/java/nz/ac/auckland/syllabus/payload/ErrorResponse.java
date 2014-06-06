@@ -1,7 +1,5 @@
 package nz.ac.auckland.syllabus.payload;
 
-import groovy.transform.CompileStatic;
-
 import java.util.Map;
 
 /**
@@ -11,7 +9,7 @@ import java.util.Map;
  * <p/>
  * <p>Author: <a href="http://gplus.to/tzrlk">Peter Cummuskey</a></p>
  */
-public class ErrorResponse extends EventResponseBase {
+public class ErrorResponse {
 
 	/**
 	 * The i18n code of the error being returned.

@@ -1,0 +1,6 @@
+= Syllabus Core
+
+The core libraries required to implement Syllabus endpoints.
+
+TODO: put Versioning back in.
+

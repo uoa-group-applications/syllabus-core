@@ -1,14 +1,16 @@
 package nz.ac.auckland.syllabus.hooks
 
 import groovy.transform.CompileStatic
-import nz.ac.auckland.syllabus.errors.ErrorHandlerCollection
-import org.junit.runner.RunWith
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.ContextConfiguration
-import nz.ac.auckland.syllabus.events.EventHandler
+import nz.ac.auckland.common.testrunner.BatheCommandLine
+import nz.ac.auckland.common.testrunner.SimpleSpringRunner
+import nz.ac.auckland.syllabus.SyllabusContext
+import nz.ac.auckland.syllabus.SyllabusHandle
+import nz.ac.auckland.syllabus.generator.EventHandlerConfig
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.test.context.ContextConfiguration
 
-import javax.inject.Inject;
+import javax.inject.Inject
 
 /**
  * User: marnix
@@ -18,7 +20,8 @@ import javax.inject.Inject;
  *
  */
 @CompileStatic
-@RunWith(SpringJUnit4ClassRunner.class)
+@BatheCommandLine(["-Pclasspath:/test.properties"])
+@RunWith(SimpleSpringRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class EventHookCollectionTest {
 
@@ -69,25 +72,21 @@ public class EventHookCollectionTest {
 	// simple event hook class
 	@BeforeEvent
 	static class EventHookTest implements EventHook {
-
 		@Override
-		void executeHook(EventHandler event) {
-			return   //To change body of implemented methods use File | Settings | File Templates.
+		void executeHook(SyllabusContext context) throws EventHookException {
 		}
 	}
 
 	// event hook class with initializer
 	@BeforeEvent
 	static class EventHookTestWithInit implements EventHook, EventHookInitializer {
-
 		@Override
-		void initializeHook(List<EventHandler> eventHandlerList) {
-
+		void executeHook(SyllabusContext context) throws EventHookException {
 		}
 
 		@Override
-		void executeHook(EventHandler event) {
-			return   //To change body of implemented methods use File | Settings | File Templates.
+		void initializeHook(List<EventHandlerConfig> eventHandlerList) throws EventHookException {
+
 		}
 	}
 
@@ -96,8 +95,7 @@ public class EventHookCollectionTest {
 	static class EventHookNSFirst implements EventHook {
 
 		@Override
-		void executeHook(EventHandler event) {
-			return   //To change body of implemented methods use File | Settings | File Templates.
+		void executeHook(SyllabusContext context) throws EventHookException {
 		}
 	}
 
@@ -106,8 +104,7 @@ public class EventHookCollectionTest {
 	static class EventHookNSSecond implements EventHook {
 
 		@Override
-		void executeHook(EventHandler event) {
-			return   //To change body of implemented methods use File | Settings | File Templates.
+		void executeHook(SyllabusContext context) throws EventHookException {
 		}
 	}
 }

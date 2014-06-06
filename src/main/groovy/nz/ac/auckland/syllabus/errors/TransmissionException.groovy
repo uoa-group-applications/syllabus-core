@@ -7,7 +7,7 @@ package nz.ac.auckland.syllabus.errors
  *
  * Exception that is thrown in syllabus code when things go wrong
  */
-class TransmissionException extends Exception {
+class TransmissionException extends RuntimeException {
 
 	/**
 	 * Status code

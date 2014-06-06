@@ -2,12 +2,8 @@ package nz.ac.auckland.syllabus.actions
 
 import groovy.transform.CompileStatic
 import nz.ac.auckland.syllabus.events.Event
-import org.slf4j.LoggerFactory
 import org.slf4j.Logger
-import nz.ac.auckland.syllabus.events.EventHandler
-
-import nz.ac.auckland.syllabus.payload.EventResponseBase
-import nz.ac.auckland.syllabus.payload.EventRequestBase
+import org.slf4j.LoggerFactory
 
 /**
  * User: marnix
@@ -18,7 +14,7 @@ import nz.ac.auckland.syllabus.payload.EventRequestBase
  */
 @CompileStatic
 @Event(name = "MyAction", namespace = "pcf")
-class BasicEventHandler implements EventHandler<BasicEventHandler.Input, BasicEventHandler.Output> {
+class BasicEventHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BasicEventHandler.class);
 
@@ -30,7 +26,7 @@ class BasicEventHandler implements EventHandler<BasicEventHandler.Input, BasicEv
 	 *
 	 * @param input
 	 */
-	public Output handleEvent(Input input) throws Exception {
+	public Output handleEvent(Input input) {
 		this.name = input.name;
 		this.description = input.description;
 
@@ -40,14 +36,14 @@ class BasicEventHandler implements EventHandler<BasicEventHandler.Input, BasicEv
 	}
 
 
-	static class Output extends EventResponseBase {
+	static class Output {
 		String output
 	}
 
 	/**
 	 * Payload
 	 */
-	static class Input extends EventRequestBase {
+	static class Input {
 
 		String name;
 		String description;

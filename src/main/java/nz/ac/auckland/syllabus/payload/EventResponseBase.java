@@ -1,11 +1,10 @@
 package nz.ac.auckland.syllabus.payload;
 
 /**
- * User: marnix
- * Date: 3/04/13
- * Time: 12:17 PM
- * <p/>
- * Will function as a base for all syllabus event response structures
+ * No longer necessary
+ *
+ * @author: Richard Vowles - https://plus.google.com/+RichardVowles
  */
+@Deprecated
 public class EventResponseBase {
 }

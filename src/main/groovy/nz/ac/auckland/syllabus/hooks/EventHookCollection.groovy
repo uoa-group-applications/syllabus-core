@@ -1,13 +1,17 @@
 package nz.ac.auckland.syllabus.hooks
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import nz.ac.auckland.common.stereotypes.UniversityComponent
-import nz.ac.auckland.syllabus.events.EventHandler
+import nz.ac.auckland.syllabus.SyllabusContext
+import nz.ac.auckland.syllabus.SyllabusHandle
 import nz.ac.auckland.syllabus.events.EventHandlerCollection
+import nz.ac.auckland.syllabus.generator.EventHandlerConfig
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 /**
@@ -18,6 +22,7 @@ import javax.inject.Inject
  * This is the collection of event hooks that will be queried on each request
  */
 @UniversityComponent
+@CompileStatic
 class EventHookCollection {
 
 	/**
@@ -45,14 +50,14 @@ class EventHookCollection {
 
 		// sort by event hook priority
 		eventHooks?.sort { EventHook h1, EventHook h2 ->
-			-(this.hookPriority(h1) <=> this.hookPriority(h2))
+			-(hookPriority(h1) <=> hookPriority(h2))
 		}
 
 		try {
 
 			// run initializers
-			this.eventHookInitializers.each { EventHookInitializer initializer ->
-				initializer.initializeHook(this.eventHandlers)
+			eventHookInitializers.each { EventHookInitializer initializer ->
+				initializer.initializeHook(eventHandlers)
 			}
 
 		}
@@ -68,8 +73,8 @@ class EventHookCollection {
 	 * @param eventHandler is the event handler this hook is being invoked on
 	 * @param namespace is the namespace to run hooks for
 	 */
-	public void runBeforeEventHooks(EventHandler eventHandler, String namespace) throws EventHookException {
-		this.runHooks(BeforeEvent.class, eventHandler, namespace);
+	public void runBeforeEventHooks(SyllabusContext context) throws EventHookException {
+		runHooks(BeforeEvent.class, context);
 	}
 
 	/**
@@ -78,8 +83,8 @@ class EventHookCollection {
 	 *
 	 * @param namespace is the namespace to run @BeforeEvent event hooks for
 	 */
-	protected void runHooks(Class<?> annotation, EventHandler eventHandler, String namespace) throws EventHookException {
-
+	@CompileStatic(TypeCheckingMode.SKIP)
+	public void runHooks(Class<?> annotation, SyllabusContext context) throws EventHookException {
 		// iterate over all hooks with a certain annotations
 		List hookList = this.getHooksWithAnnotation(annotation)
 
@@ -92,11 +97,11 @@ class EventHookCollection {
 			def eventAnnotation = hook.class.getAnnotation(annotation)
 
 			// does the namespace match what we're looking for?
-			boolean namespaceMatches = (eventAnnotation.namespace() == "" || namespace == eventAnnotation.namespace());
+			boolean namespaceMatches = (eventAnnotation.namespace() == "" || context.namespace == eventAnnotation.namespace());
 
 			// can run? make it so.
 			if (namespaceMatches) {
-				hook.executeHook(eventHandler);
+				hook.executeHook(context);
 			}
 		}
 	}
@@ -131,7 +136,7 @@ class EventHookCollection {
 	protected List<EventHook> getHooksWithAnnotation(Class<?> annotationClass) {
 		return this.eventHooks.findAll {
 			it.class.getAnnotation(annotationClass) != null
-		}
+		} as List<EventHook>
 	}
 
 	/**
@@ -140,15 +145,15 @@ class EventHookCollection {
 	 * @return a list of event hook initializer instances
 	 */
 	protected List<EventHookInitializer> getEventHookInitializers() {
-		return this.eventHooks?.findAll {
-			it instanceof EventHookInitializer
-		}
+		return this.eventHooks?.findAll { EventHook eventHook ->
+			return eventHook instanceof EventHookInitializer
+		} as List<EventHookInitializer>
 	}
 
 	/**
 	 * @return a flat list of all event handlers
 	 */
-	protected List<EventHandler> getEventHandlers() {
+	protected List<EventHandlerConfig> getEventHandlers() {
 		return this.eventHandlerCollection.findAll();
 	}
 

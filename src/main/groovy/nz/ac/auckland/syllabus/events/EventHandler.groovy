@@ -4,12 +4,11 @@ import nz.ac.auckland.syllabus.payload.EventRequestBase
 import nz.ac.auckland.syllabus.payload.EventResponseBase
 
 /**
- * User: marnix
- * Date: 25/03/13
- * Time: 11:36 AM
+ * Do not use this class any longer.
  *
- * Implement this class for every eventHandler
+ * @author: Richard Vowles - https://plus.google.com/+RichardVowles
  */
+@Deprecated
 interface EventHandler<RequestType extends EventRequestBase, ResponseType extends EventResponseBase> {
 
 	/**
