@@ -36,12 +36,4 @@ public class UncaughtExceptionHandler implements SyllabusExceptionHandler {
 		return new ErrorResponse(error: ERROR_UNKNOWN, context: errorIdentifier);
 	}
 
-	/**
-	 * Is a catch all so should respond to Exception
-	 */
-	@Override
-	public Class<? extends Exception> respondsTo() {
-		return Exception.class
-	}
-
 }

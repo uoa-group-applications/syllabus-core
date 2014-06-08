@@ -29,9 +29,4 @@ public class UncaughtExceptionHandlerTest {
 		assert response.context instanceof Map;
 		assert response.context.containsKey('uuid');
 	}
-
-	@Test
-	public void increaseCoverageRating() throws Exception {
-		assert target.respondsTo() == Exception.class;
-	}
 }

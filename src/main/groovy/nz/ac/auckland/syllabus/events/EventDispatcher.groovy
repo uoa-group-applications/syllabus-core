@@ -2,6 +2,8 @@ package nz.ac.auckland.syllabus.events
 
 import groovy.transform.CompileStatic
 import nz.ac.auckland.syllabus.SyllabusContext
+import nz.ac.auckland.syllabus.errors.TransmissionException
+import nz.ac.auckland.syllabus.hooks.EventHookException
 
 /**
  * User: marnix
@@ -36,4 +38,5 @@ interface EventDispatcher {
 	 */
 
 	public Object dispatch(SyllabusContext context, DecodeCallback decodeCallback)
+		throws TransmissionException, EventHookException
 }
