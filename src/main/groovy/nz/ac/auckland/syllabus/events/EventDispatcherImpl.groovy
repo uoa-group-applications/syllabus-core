@@ -63,16 +63,22 @@ class EventDispatcherImpl implements EventDispatcher {
 		// figure out who should handle it
 		context.handlerConfig = getEventHandlerByName(context.action, context.namespace)
 
+		// handle the event and catch and try to do something with
+		Object returnObject
+
 		// run the @BeforeEvent annotated EventHooks for this event, it could change the SyllabusHandle
-		runBeforeEventHooks(context);
+		try {
+			runBeforeEventHooks(context)
+		} catch (Exception beforeHookException) {
+			returnObject = handleError(beforeHookException)
+
+			return returnObject
+		}
 
 		// make sure we can actually call something
 		if (!context.currentHandle) {
 				throw new TransmissionException("No event handler found for ${context.namespace}::${context.action} (v${context.version})", FOUR_O_FOUR);
 		}
-
-		// handle the event and catch and try to do something with
-		Object returnObject
 
 		try {
 			returnObject = context.currentHandle.invoke(decodeCallback.decode(context), context)

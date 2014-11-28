@@ -29,7 +29,6 @@ public class UncaughtExceptionHandler implements SyllabusExceptionHandler {
 	 * Returns a basic error response to avoid exceptions bubbling any further toward the connection.
 	 * @param exception The exception being thrown.
 	 */
-	@Override
 	public ErrorResponse handleError(Exception exception) {
 		Map errorIdentifier = [uuid: UUID.randomUUID().toString()];
 		LOG.error("$ERROR_MESSAGE: ${jacksonHelperApi.jsonSerialize(errorIdentifier)}", exception);

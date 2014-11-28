@@ -133,9 +133,9 @@ class EventHookCollection {
 	 * @param annotationClass is the annotation to go looking for
 	 * @return a list
 	 */
-	protected List<EventHook> getHooksWithAnnotation(Class<?> annotationClass) {
-		return this.eventHooks.findAll {
-			it.class.getAnnotation(annotationClass) != null
+	protected List<EventHook> getHooksWithAnnotation(Class annotationClass) {
+		return this.eventHooks.findAll { EventHook eventHook ->
+			return eventHook.getClass().getAnnotation(annotationClass) != null
 		} as List<EventHook>
 	}
 
